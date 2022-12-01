@@ -269,6 +269,9 @@ jobs:
       - name: Create .java-version file
         shell: bash
         run: echo "11" > .java-version
+      - name: Cat .java-version file
+        shell: bash
+        run: cat .java-version
       - name: setup-java
         uses: ./
         id: setup-java
@@ -292,6 +295,9 @@ jobs:
       - name: Create .java-version file
         shell: bash
         run: echo "11.0.2" > .java-version
+      - name: Cat .java-version file
+        shell: bash
+        run: cat .java-version
       - name: setup-java
         uses: ./
         id: setup-java
