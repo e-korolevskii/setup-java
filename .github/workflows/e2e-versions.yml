@@ -278,7 +278,7 @@ jobs:
         run: bash __tests__/verify-java.sh "11" "${{ steps.setup-java.outputs.path }}"
         shell: bash
 
-  setup-java-version-from-file-major-minor-patch notation:
+  setup-java-version-from-file-major-minor-patch-notation:
     name: ${{ matrix.distribution }} version from file - ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
@@ -301,7 +301,7 @@ jobs:
         run: bash __tests__/verify-java.sh "11.0.2" "${{ steps.setup-java.outputs.path }}"
         shell: bash
 
-  setup-java-version-from-file-major-minor-patch with dist:
+  setup-java-version-from-file-major-minor-patch-with-dist:
     name: ${{ matrix.distribution }} version from file - ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
