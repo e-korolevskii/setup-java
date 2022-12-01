@@ -256,7 +256,7 @@ jobs:
   #       shell: bash
 
   setup-java-version-from-file-major-notation:
-    name: ${{ matrix.distribution }} version from file - ${{ matrix.os }}
+    name: ${{ matrix.distribution }} version from file X - ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -282,7 +282,7 @@ jobs:
         shell: bash
 
   setup-java-version-from-file-major-minor-patch-notation:
-    name: ${{ matrix.distribution }} version from file - ${{ matrix.os }}
+    name: ${{ matrix.distribution }} version from file X.Y.Z - ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -308,7 +308,7 @@ jobs:
         shell: bash
 
   setup-java-version-from-file-major-minor-patch-with-dist:
-    name: ${{ matrix.distribution }} version from file - ${{ matrix.os }}
+    name: ${{ matrix.distribution }} version from file 'openjdk64-11.0.2' - ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
