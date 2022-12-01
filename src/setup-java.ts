@@ -27,8 +27,8 @@ async function run() {
     }
 
     const emptyArr: string[] = [];
-    core.info(`JAVA_VERSION input: ${versions.length} ${versions.join("_---_")}`)
-    core.info(`EmptyArr: ${emptyArr.length} ${emptyArr.join("_---_")}`)
+    core.info(`JAVA_VERSION input: ${versions.length} ${versions.join("_---_")} ${!versions.length}`)
+    core.info(`EmptyArr: ${emptyArr.length} ${emptyArr.join("_---_")} ${!emptyArr.length}`)
 
     if (!versions.length) {
       core.debug('JAVA_VERSION input is empty, looking for .java-version file');
