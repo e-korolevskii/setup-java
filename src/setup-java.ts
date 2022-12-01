@@ -26,10 +26,6 @@ async function run() {
       toolchainIds = [];
     }
 
-    const emptyArr: string[] = [];
-    core.info(`JAVA_VERSION input: ${versions.length} ${versions.join("_---_")} ${!versions.length}`)
-    core.info(`EmptyArr: ${emptyArr.length} ${emptyArr.join("_---_")} ${!emptyArr.length}`)
-
     if (!versions.length) {
       core.debug('JAVA_VERSION input is empty, looking for .java-version file');
       const versionFileName = '.java-version';
@@ -44,11 +40,11 @@ async function run() {
       let installed = false;
       while (!installed && version != '') {
         try {
-          core.debug(`Trying to install version ${version}`);
+          core.info(`Trying to install version ${version}`);
           await installVersion(version);
           installed = true;
         } catch (error) {
-          core.debug(`${error.toString()}`);
+          core.info(`${error.toString()}`);
           version = getHigherVersion(version);
         }
       }
