@@ -26,6 +26,8 @@ async function run() {
       toolchainIds = [];
     }
 
+    core.info(versions.join("_---_"))
+
     if (!versions.length) {
       core.debug('JAVA_VERSION input is empty, looking for .java-version file');
       const versionFileName = '.java-version';
