@@ -255,7 +255,7 @@ jobs:
   #       run: bash __tests__/verify-java.sh "${{ matrix.version }}" "${{ steps.setup-java.outputs.path }}"
   #       shell: bash
 
-  setup-java-version-from-file:
+  setup-java-version-from-file(major-notation):
     name: ${{ matrix.distribution }} version from file - ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
@@ -276,4 +276,50 @@ jobs:
           distribution: ${{ matrix.distribution }}
       - name: Verify Java
         run: bash __tests__/verify-java.sh "11" "${{ steps.setup-java.outputs.path }}"
+        shell: bash
+
+  setup-java-version-from-file(major-minor-patch notation):
+    name: ${{ matrix.distribution }} version from file - ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
+        distribution: ['temurin', 'adopt', 'adopt-openj9', 'zulu', 'liberica', 'microsoft', ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Create .java-version file
+        shell: bash
+        run: echo "11.0.2" > .java-version
+      - name: setup-java
+        uses: ./
+        id: setup-java
+        with:
+          distribution: ${{ matrix.distribution }}
+      - name: Verify Java
+        run: bash __tests__/verify-java.sh "11.0.2" "${{ steps.setup-java.outputs.path }}"
+        shell: bash
+
+  setup-java-version-from-file(major-minor-patch with dist):
+    name: ${{ matrix.distribution }} version from file - ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
+        distribution: ['temurin', 'adopt', 'adopt-openj9', 'zulu', 'liberica', 'microsoft', ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Create .java-version file
+        shell: bash
+        run: echo "openjdk64-11.0.2" > .java-version
+      - name: setup-java
+        uses: ./
+        id: setup-java
+        with:
+          distribution: ${{ matrix.distribution }}
+      - name: Verify Java
+        run: bash __tests__/verify-java.sh "11.0.2" "${{ steps.setup-java.outputs.path }}"
         shell: bash
