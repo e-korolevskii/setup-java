@@ -13,6 +13,7 @@ async function run() {
   try {
     const versions = core.getMultilineInput(constants.INPUT_JAVA_VERSION);
     const distributionName = core.getInput(constants.INPUT_DISTRIBUTION, { required: true });
+    const versionFile = core.getInput(constants.INPUT_JAVA_VERSION_FILE);
     const architecture = core.getInput(constants.INPUT_ARCHITECTURE);
     const packageType = core.getInput(constants.INPUT_JAVA_PACKAGE);
     const jdkFile = core.getInput(constants.INPUT_JDK_FILE);
@@ -26,11 +27,14 @@ async function run() {
       toolchainIds = [];
     }
 
+    if (!versions.length && !versionFile) {
+      throw new Error("Java-version or java-version-file input expected");
+    }
+
     if (!versions.length) {
-      core.debug('JAVA_VERSION input is empty, looking for .java-version file');
-      const versionFileName = '.java-version';
+      core.debug('Java-version input is empty, looking for java-version-file input');
       const contents = fs
-        .readFileSync(versionFileName)
+        .readFileSync(versionFile)
         .toString()
         .trim();
       const semverRegExp = /(?<version>(?<=(^|\s|\-))(\d+\S*))(\s|$)/;
@@ -38,7 +42,7 @@ async function run() {
         ? (contents.match(semverRegExp)?.groups?.version as string)
         : '';
       let installed = false;
-      while (!installed && version != '') {
+      while (!installed && version) {
         try {
           core.info(`Trying to install version ${version}`);
           await installVersion(version);
@@ -49,7 +53,7 @@ async function run() {
         }
       }
       if (!installed) {
-        throw new Error("Сan't install appropriate version from .java-version file");
+        throw new Error(`Сan't install appropriate version from ${versionFile} file`);
       }
     }
 
@@ -93,15 +97,15 @@ async function run() {
       core.info(`  Path: ${result.path}`);
       core.info('');
     }
-
-    function getHigherVersion(version: string) {
-      return version.split('-')[0] === version
-        ? version.substring(0, version.lastIndexOf('.'))
-        : version.split('-')[0];
-    }
   } catch (error) {
     core.setFailed(error.message);
   }
 }
 
 run();
+
+function getHigherVersion(version: string) {
+  return version.split('-')[0] === version
+    ? version.substring(0, version.lastIndexOf('.'))
+    : version.split('-')[0];
+}
