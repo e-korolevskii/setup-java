@@ -68624,7 +68624,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.avoidOldNotation = exports.getVersionFromFileContent = exports.isCacheFeatureAvailable = exports.isGhes = exports.isJobStatusSuccess = exports.getToolcachePath = exports.isVersionSatisfies = exports.getDownloadArchiveExtension = exports.extractJdkFile = exports.getVersionFromToolcachePath = exports.getBooleanInput = exports.getTempDir = void 0;
+exports.getVersionFromFileContent = exports.isCacheFeatureAvailable = exports.isGhes = exports.isJobStatusSuccess = exports.getToolcachePath = exports.isVersionSatisfies = exports.getDownloadArchiveExtension = exports.extractJdkFile = exports.getVersionFromToolcachePath = exports.getBooleanInput = exports.getTempDir = void 0;
 const os_1 = __importDefault(__nccwpck_require__(2037));
 const path_1 = __importDefault(__nccwpck_require__(1017));
 const fs = __importStar(__nccwpck_require__(7147));
@@ -68730,9 +68730,8 @@ function getVersionFromFileContent(content, distributionName) {
         return null;
     }
     const tentativeVersion = avoidOldNotation(fileContent);
-    let version = semver.validRange(tentativeVersion)
-        ? tentativeVersion
-        : semver.coerce(tentativeVersion);
+    const rawVersion = tentativeVersion.split('-')[0];
+    let version = semver.validRange(rawVersion) ? tentativeVersion : semver.coerce(tentativeVersion);
     if (!version) {
         return null;
     }
@@ -68746,7 +68745,6 @@ exports.getVersionFromFileContent = getVersionFromFileContent;
 function avoidOldNotation(content) {
     return content.startsWith('1.') ? content.substring(2) : content;
 }
-exports.avoidOldNotation = avoidOldNotation;
 
 
 /***/ }),

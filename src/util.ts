@@ -112,10 +112,9 @@ export function getVersionFromFileContent(
     return null;
   }
   const tentativeVersion = avoidOldNotation(fileContent);
+  const rawVersion = tentativeVersion.split('-')[0];
 
-  let version = semver.validRange(tentativeVersion)
-    ? tentativeVersion
-    : semver.coerce(tentativeVersion);
+  let version = semver.validRange(rawVersion) ? tentativeVersion : semver.coerce(tentativeVersion);
 
   if (!version) {
     return null;
@@ -129,6 +128,6 @@ export function getVersionFromFileContent(
 }
 
 // By convention, action expects version 8 in the format `8.*` instead of `1.8`
-export function avoidOldNotation(content: string): string {
+function avoidOldNotation(content: string): string {
   return content.startsWith('1.') ? content.substring(2) : content;
 }
