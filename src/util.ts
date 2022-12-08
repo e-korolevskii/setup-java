@@ -111,10 +111,15 @@ export function getVersionFromFileContent(
   if (!fileContent) {
     return null;
   }
+
+  core.debug(`Version from file '${fileContent}'`);
+
   const tentativeVersion = avoidOldNotation(fileContent);
   const rawVersion = tentativeVersion.split('-')[0];
 
   let version = semver.validRange(rawVersion) ? tentativeVersion : semver.coerce(tentativeVersion);
+
+  core.debug(`Range version is '${version}'`);
 
   if (!version) {
     return null;

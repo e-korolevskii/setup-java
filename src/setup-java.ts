@@ -48,6 +48,7 @@ async function run() {
         .trim();
 
       const version = getVersionFromFileContent(content, distributionName);
+      core.debug(`Parsed version from file '${version}'`);
 
       if (!version) {
         throw new Error(`No supported version was found in file ${versionFile}`);
