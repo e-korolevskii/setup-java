@@ -68721,7 +68721,7 @@ function isCacheFeatureAvailable() {
 }
 exports.isCacheFeatureAvailable = isCacheFeatureAvailable;
 function getVersionFromFileContent(content, distributionName) {
-    var _a, _b, _c, _d;
+    var _a, _b, _c, _d, _e;
     const javaVersionRegExp = /(?<version>(?<=(^|\s|\-))(\d+\S*))(\s|$)/;
     const fileContent = ((_b = (_a = content.match(javaVersionRegExp)) === null || _a === void 0 ? void 0 : _a.groups) === null || _b === void 0 ? void 0 : _b.version)
         ? (_d = (_c = content.match(javaVersionRegExp)) === null || _c === void 0 ? void 0 : _c.groups) === null || _d === void 0 ? void 0 : _d.version
@@ -68733,12 +68733,13 @@ function getVersionFromFileContent(content, distributionName) {
     const tentativeVersion = avoidOldNotation(fileContent);
     const rawVersion = tentativeVersion.split('-')[0];
     let version = semver.validRange(rawVersion) ? tentativeVersion : semver.coerce(tentativeVersion);
-    core.debug(`Range version is '${version}'`);
+    core.debug(`Range version from file is '${version}'`);
     if (!version) {
         return null;
     }
     if (constants_1.DISTRIBUTIONS_ONLY_MAJOR_VERSION.includes(distributionName)) {
-        version = semver.major(version).toString();
+        const coerceVersion = (_e = semver.coerce(version)) !== null && _e !== void 0 ? _e : version;
+        version = semver.major(coerceVersion).toString();
     }
     return version.toString();
 }

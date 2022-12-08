@@ -119,14 +119,15 @@ export function getVersionFromFileContent(
 
   let version = semver.validRange(rawVersion) ? tentativeVersion : semver.coerce(tentativeVersion);
 
-  core.debug(`Range version is '${version}'`);
+  core.debug(`Range version from file is '${version}'`);
 
   if (!version) {
     return null;
   }
 
   if (DISTRIBUTIONS_ONLY_MAJOR_VERSION.includes(distributionName)) {
-    version = semver.major(version).toString();
+    const coerceVersion = semver.coerce(version) ?? version;
+    version = semver.major(coerceVersion).toString();
   }
 
   return version.toString();
